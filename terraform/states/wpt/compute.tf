@@ -12,6 +12,11 @@ resource "aws_instance" "production" {
 #  iam_instance_profile = "${aws_iam_instance_profile.backup.name}"
 }
 
+resource "aws_eip" "production" {
+  instance = "${aws_instance.production.id}"
+  vpc      = true
+}
+
 resource "aws_instance" "staging" {
   ami = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.nano"
@@ -24,6 +29,11 @@ resource "aws_instance" "staging" {
     "Name" = "${var.name}-staging"
   }
 #  iam_instance_profile = "${aws_iam_instance_profile.backup.name}"
+}
+
+resource "aws_eip" "staging" {
+  instance = "${aws_instance.staging.id}"
+  vpc      = true
 }
 
 resource "aws_security_group" "web" {
