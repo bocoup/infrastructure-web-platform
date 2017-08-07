@@ -34,7 +34,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "web-platform-terraform"
-    key = "web-platform.tfstate"
+    key = "pr-dashboard.tfstate"
     region = "us-east-1"
     profile = "web-platform"
   }
