@@ -1,5 +1,6 @@
 ##
-# TODO: documentation about how this will be used.
+# This will be used to store pre-built cross-compiled binaries for a variety of
+# JavaScript engines and runtimes.
 #
 resource "aws_s3_bucket" "builds" {
   bucket = "eshost-builds"
