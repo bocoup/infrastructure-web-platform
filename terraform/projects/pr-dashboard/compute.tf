@@ -1,6 +1,6 @@
 resource "aws_instance" "production" {
   ami = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.nano"
+  instance_type = "t2.small"
   key_name = "${var.key_name}"
   subnet_id = "${element(module.subnet.ids, 0)}"
   vpc_security_group_ids = [
@@ -8,6 +8,7 @@ resource "aws_instance" "production" {
   ]
   tags {
     "Name" = "${var.name}-production"
+    "Foo" = "${var.name}-hello-world"
   }
 #  iam_instance_profile = "${aws_iam_instance_profile.backup.name}"
 }
@@ -19,7 +20,7 @@ resource "aws_eip" "production" {
 
 resource "aws_instance" "staging" {
   ami = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.nano"
+  instance_type = "t2.small"
   key_name = "${var.key_name}"
   subnet_id = "${element(module.subnet.ids, 0)}"
   vpc_security_group_ids = [
