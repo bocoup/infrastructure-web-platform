@@ -46,43 +46,43 @@ resource "aws_security_group" "web-platform-tests-db1" {
   }
 }
 
-resource "aws_iam_policy" "web-platform-tests-db-backup" {
-  name = "web-platform-tests-db-backup"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "s3:ListAllMyBuckets",
-      "Resource": "arn:aws:s3:::*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "s3:*",
-      "Resource": [
-        "arn:aws:s3:::${var.nas_backup_bucket}/db",
-        "arn:aws:s3:::${var.nas_backup_bucket}/db*"
-      ]
-    }
-  ]
-}
-EOF
-}
+# resource "aws_iam_policy" "web-platform-tests-db-backup" {
+#   name = "web-platform-tests-db-backup"
+#   policy = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Action": "s3:ListAllMyBuckets",
+#       "Resource": "arn:aws:s3:::*"
+#     },
+#     {
+#       "Effect": "Allow",
+#       "Action": "s3:*",
+#       "Resource": [
+#         "arn:aws:s3:::${var.nas_backup_bucket}/db",
+#         "arn:aws:s3:::${var.nas_backup_bucket}/db*"
+#       ]
+#     }
+#   ]
+# }
+# EOF
+# }
 
-resource "aws_iam_user" "web-platform-tests-db-backup" {
-  name = "web-platform-tests-db-backup"
-}
+# resource "aws_iam_user" "web-platform-tests-db-backup" {
+#   name = "web-platform-tests-db-backup"
+# }
 
-resource "aws_iam_policy_attachment" "web-platform-tests-db-backup" {
-  name = "web-platform-tests-db-backup"
-  policy_arn = "${aws_iam_policy.web-platform-tests-db-backup.arn}"
-  users = ["${aws_iam_user.web-platform-tests-db-backup.id}"]
-}
+# resource "aws_iam_policy_attachment" "web-platform-tests-db-backup" {
+#   name = "web-platform-tests-db-backup"
+#   policy_arn = "${aws_iam_policy.web-platform-tests-db-backup.arn}"
+#   users = ["${aws_iam_user.web-platform-tests-db-backup.id}"]
+# }
 
-# this key was created manually to prevent the secret
-# from being stored in the tfstate file.
-# it is available under /mnt/secrets/db-backup-keys
-#resource "aws_iam_access_key" "db-backup" {
-#  user = "${aws_iam_user.db-backup.id}"
-#}
+# # this key was created manually to prevent the secret
+# # from being stored in the tfstate file.
+# # it is available under /mnt/secrets/db-backup-keys
+# #resource "aws_iam_access_key" "db-backup" {
+# #  user = "${aws_iam_user.db-backup.id}"
+# #}
