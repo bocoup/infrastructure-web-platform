@@ -1,17 +1,3 @@
-resource "aws_db_subnet_group" "rds" {       
-  name = "default-db"                        
-  description = "default subnets"            
-  subnet_ids = ["${aws_subnet_wpt_id}"]
-}
-
-resource "aws_subnet_wpt" "wpt-subnet" {
-  vpc_id            = "vpc-eb65f992"
-  cidr_block        = "10.100.0.0/16"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
 
 resource "aws_db_instance" "rds" {
   identifier = "web-platform-tests-db"
@@ -28,7 +14,6 @@ resource "aws_db_instance" "rds" {
   backup_window = "05:00-18:30"
   maintenance_window = "sun:03:00-sun:04:00"
   allow_major_version_upgrade = true
-  db_subnet_group_name = "${aws_db_subnet_group.rds.id}"
   vpc_security_group_ids = [
     "${aws_security_group.web-platform-tests-db1.id}",
   ]
@@ -39,7 +24,7 @@ resource "aws_security_group" "web-platform-tests-db1" {
   name = "web-platform-tests-db1"
 
   description = "RDS postgres servers (terraform-managed)"
-  vpc_id = "vpc-eb65f992"
+  vpc_id = "${module.vpc.id}"
 
   # Only postgres in
   ingress {
@@ -47,7 +32,7 @@ resource "aws_security_group" "web-platform-tests-db1" {
     to_port = 5432
     protocol = "tcp"
     cidr_blocks = [
-      "${var.vpc_cidr}",
+      "${var.subnet_cidr_blocks}",
     ]
 
   }
