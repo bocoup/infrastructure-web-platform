@@ -14,16 +14,27 @@ resource "aws_db_instance" "rds" {
   backup_window = "05:00-18:30"
   maintenance_window = "sun:03:00-sun:04:00"
   allow_major_version_upgrade = true
-
+  skip_final_snapshot          = false
+  final_snapshot_identifier    = "${var.name}-final"
+# DBSubnetGroupName
+  db_subnet_group_name = "${aws_db_subnet_group.rds.name}"
   vpc_security_group_ids = [
     "${aws_security_group.web-platform-tests-db1.id}",
   ]
 }
 
+resource "aws_db_subnet_group" "rds" {
+  name = "default-wpt"
+  description = "default subnets"
+  subnet_ids = ["${var.subnet_wpt_blocks}"]
+}
+
+
 resource "aws_security_group" "web-platform-tests-db1" {  
   name = "web-platform-tests-db1"
 
   description = "RDS postgres servers (terraform-managed)"
+  #vpc_id = "vpc-eb65f992"
   vpc_id = "${module.vpc.id}"
 
   # Only postgres in

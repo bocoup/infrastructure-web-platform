@@ -40,6 +40,10 @@ terraform {
   }
 }
 
+variable "nas_backup_bucket" {
+  default = "web-platform-backups"
+}
+
 ##
 # This locates the AMI for the Ubuntu image we'd like to use on all of our VMs
 # for this project.
@@ -57,3 +61,4 @@ data "aws_ami" "ubuntu" {
   # Canonical
   owners = ["099720109477"]
 }
+
