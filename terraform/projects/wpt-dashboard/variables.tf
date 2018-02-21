@@ -5,7 +5,7 @@
 # names for resources we'd otherwise like to name generically.
 #
 variable "name" {
-  default = "web-platform"
+  default = "wpt-dashboard"
 }
 
 ##
@@ -34,7 +34,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "web-platform-terraform"
-    key = "pr-dashboard.tfstate"
+    key = "wpt-dashboard.tfstate"
     region = "us-east-1"
     profile = "web-platform"
   }
