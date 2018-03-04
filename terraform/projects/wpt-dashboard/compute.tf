@@ -20,20 +20,7 @@ resource "aws_eip" "production" {
 
 resource "aws_instance" "worker-chrome-unstable" {
   ami = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.nano"
-  key_name = "${var.key_name}"
-  subnet_id = "${element(module.subnet.ids, 0)}"
-  vpc_security_group_ids = [
-    "${aws_security_group.ssh.id}",
-  ]
-  tags {
-    "Name" = "${var.name}-staging"
-  }
-}
-
-resource "aws_instance" "worker-firefox-unstable" {
-  ami = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
   key_name = "${var.key_name}"
   subnet_id = "${element(module.subnet.ids, 0)}"
   vpc_security_group_ids = [
