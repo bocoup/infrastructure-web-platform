@@ -3,7 +3,7 @@
 # network for a project to live in.
 #
 variable "vpc_cidr" {
-  default = "10.100.0.0/16"
+  default = "10.101.0.0/16"
 }
 
 ##
@@ -14,9 +14,7 @@ variable "vpc_cidr" {
 variable "subnet_cidr_blocks" {
   type = "list"
   default = [
-    "10.100.0.0/24",
-    "10.100.1.0/24",
-    "10.100.2.0/24"
+    "10.101.23.0/24"
   ]
 }
 
