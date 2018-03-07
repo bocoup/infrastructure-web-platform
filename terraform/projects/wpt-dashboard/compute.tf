@@ -86,15 +86,22 @@ variable "instance_ips" {
   default = {
     "0" = "10.101.23.100"
     "1" = "10.101.23.101"
+    "2" = "10.101.23.102"
+    "3" = "10.101.23.103"
+    "4" = "10.101.23.104"
+    "5" = "10.101.23.105"
+    "6" = "10.101.23.106"
+    "7" = "10.101.23.107"
+    "8" = "10.101.23.108"
+    "9" = "10.101.23.109"
   }
 }
 
 resource "aws_instance" "build_worker" {
-  count = "2"
+  count = "10"
 
   ami = "${data.aws_ami.ubuntu.id}"
-  associate_public_ip_address = false
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name = "${var.key_name}"
   subnet_id = "${element(module.subnet.ids, 0)}"
   private_ip = "${lookup(var.instance_ips, count.index)}"
