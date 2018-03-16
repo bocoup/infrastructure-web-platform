@@ -82,6 +82,12 @@ resource "aws_instance" "build_master" {
   }
 }
 
+resource "aws_volume_attachment" "database_attachment" {
+  device_name = "/dev/sdf"
+  volume_id   = "${aws_ebs_volume.build_master_database.id}"
+  instance_id = "${aws_instance.build_master.id}"
+}
+
 variable "instance_ips" {
   default = {
     "0" = "10.101.23.100"
