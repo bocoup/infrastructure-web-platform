@@ -68,7 +68,7 @@ resource "aws_security_group" "buildbot" {
 # https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html#VPCSubnet
 resource "aws_instance" "build_master" {
   ami = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name = "${var.key_name}"
   subnet_id = "${element(module.subnet.ids, 0)}"
   private_ip = "10.101.23.10"
