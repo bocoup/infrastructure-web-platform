@@ -20,6 +20,15 @@ variable "subnet_cidr_blocks" {
   ]
 }
 
+variable "subnet_wpt_blocks" {
+  type = "list"
+  default = [
+    "subnet-a28760c6",
+    "subnet-7b068921",
+    "subnet-d049defc"
+  ]
+}
+
 ##
 # Get all availability zones from AWS for the region we are in
 #

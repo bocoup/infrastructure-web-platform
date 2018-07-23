@@ -38,7 +38,8 @@ resource "aws_eip" "staging" {
 }
 
 resource "aws_security_group" "web" {
-  vpc_id = "${module.vpc.id}"
+  #vpc_id = "${module.vpc.id}"
+  vpc_id = "vpc-eb65f992"
   ingress {
     from_port = 22
     to_port = 22
