@@ -1,4 +1,14 @@
 ##
+# This tells Terraform how to authenticate for AWS resources. It expects
+# an entry in ~/.aws/credentials with a matching profile. You can create
+# this with `aws configure --profile web-platform`.
+#
+provider "aws" {
+  profile = "web-platform"
+  region = "us-east-1"
+}
+
+##
 # This is the network all of our services are hosted in. Each VPC is an isolated
 # network for a project to live in.
 #
@@ -26,15 +36,32 @@ variable "subnet_cidr_blocks" {
 data "aws_availability_zones" "available" {}
 
 module "vpc" {
-  source = "../../modules/aws/vpc"
-  name = "${var.name}"
+  source = "./modules/aws/vpc"
+  name = "web-platform"
   cidr = "${var.vpc_cidr}"
 }
 
 module "subnet" {
-  source = "../../modules/aws/subnet"
-  name = "${var.name}"
+  source = "./modules/aws/subnet"
+  name = "web-platform"
   azs = "${data.aws_availability_zones.available.names}"
   vpc_id = "${module.vpc.id}"
   cidr_blocks = "${var.subnet_cidr_blocks}"
+}
+
+
+module "eshost" {
+  source = "./projects/eshost"
+}
+
+module "pr-dashboard" {
+  source = "./projects/pr-dashboard"
+  vpc_id = "${module.vpc.id}"
+  public_subnet_ids = "${module.subnet.ids}"
+}
+
+module "web-platform-test-live" {
+  source = "./projects/web-platform-tests-live"
+  vpc_id = "${module.vpc.id}"
+  public_subnet_ids = "${module.subnet.ids}"
 }

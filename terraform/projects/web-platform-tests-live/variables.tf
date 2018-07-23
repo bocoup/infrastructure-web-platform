@@ -17,16 +17,6 @@ variable "key_name" {
 }
 
 ##
-# This tells Terraform how to authenticate for AWS resources. It expects
-# an entry in ~/.aws/credentials with a matching profile. You can create
-# this with `aws configure --profile web-platform`.
-#
-provider "aws" {
-  profile = "web-platform"
-  region = "us-east-1"
-}
-
-##
 # This locates the AMI for the Ubuntu image we'd like to use on all of our VMs
 # for this project.
 #

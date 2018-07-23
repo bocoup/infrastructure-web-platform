@@ -2,7 +2,7 @@ resource "aws_instance" "production" {
   ami = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.small"
   key_name = "${var.key_name}"
-  subnet_id = "${element(module.subnet.ids, 0)}"
+  subnet_id = "${element(var.public_subnet_ids, 0)}"
   vpc_security_group_ids = [
     "${aws_security_group.web.id}",
   ]
@@ -22,7 +22,7 @@ resource "aws_instance" "staging" {
   ami = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.small"
   key_name = "${var.key_name}"
-  subnet_id = "${element(module.subnet.ids, 0)}"
+  subnet_id = "${element(var.public_subnet_ids, 0)}"
   vpc_security_group_ids = [
     "${aws_security_group.web.id}",
   ]
@@ -38,7 +38,7 @@ resource "aws_eip" "staging" {
 }
 
 resource "aws_security_group" "web" {
-  vpc_id = "${module.vpc.id}"
+  vpc_id = "${var.vpc_id}"
   ingress {
     from_port = 22
     to_port = 22
