@@ -1,10 +1,16 @@
 ##
 # This modules manages subnets for a VPC.
 #
-variable "name" { }
 variable "azs" { type = "list" }
 variable "vpc_id" { }
-variable "cidr_blocks" { type = "list" }
+variable "cidr_blocks" {
+  type = "list"
+  default = [
+    "10.100.0.0/24",
+    "10.100.1.0/24",
+    "10.100.2.0/24"
+  ]
+}
 
 output "ids" { value = ["${aws_subnet.main.*.id}"] }
 output "cidr_blocks" { value = ["${aws_subnet.main.*.cidr_block}"] }
@@ -20,7 +26,7 @@ resource "aws_subnet" "main" {
   availability_zone = "${element(var.azs, count.index)}"
   map_public_ip_on_launch = true
   tags {
-    Name = "${var.name}-${count.index}"
+    Name = "web-platform-${count.index}"
   }
 }
 
@@ -48,7 +54,7 @@ resource "aws_network_acl" "main" {
     to_port = 0
   }
   tags {
-    Name = "${var.name}"
+    Name = "web-platform"
   }
 }
 
@@ -58,7 +64,7 @@ resource "aws_network_acl" "main" {
 resource "aws_internet_gateway" "main" {
   vpc_id = "${var.vpc_id}"
   tags {
-    Name = "${var.name}"
+    Name = "web-platform"
   }
 }
 
@@ -68,7 +74,7 @@ resource "aws_internet_gateway" "main" {
 resource "aws_route_table" "main" {
   vpc_id = "${var.vpc_id}"
   tags {
-    Name = "${var.name}"
+    Name = "web-platform"
   }
 }
 
