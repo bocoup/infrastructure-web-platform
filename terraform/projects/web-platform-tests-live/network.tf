@@ -25,7 +25,7 @@ resource "aws_route53_record" "web_platform_tests_live_A_web_platform_tests_live
   type = "A"
   name = "web-platform-tests.live"
   ttl = "1"
-  records = ["${aws_instance.web_platform_tests_live.public_ip}"]
+  records = ["${aws_eip.web_platform_tests_live.public_ip}"]
 }
 
 resource "aws_route53_record" "web_platform_tests_live_CNAME_www-web_platform_tests_live" {
@@ -82,7 +82,7 @@ resource "aws_route53_record" "not_web_platform_tests_live_A_not_web_platform_te
   type = "A"
   name = "not-web-platform-tests.live"
   ttl = "1"
-  records = ["${aws_instance.web_platform_tests_live.public_ip}"]
+  records = ["${aws_eip.web_platform_tests_live.public_ip}"]
 }
 
 resource "aws_route53_record" "not_web_platform_tests_live_CNAME_www-not_web_platform_tests_live" {
