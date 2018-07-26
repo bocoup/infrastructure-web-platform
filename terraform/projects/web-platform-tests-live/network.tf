@@ -124,3 +124,9 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_xn--n8j6ds53lww
   ttl = "1"
   records = ["not-web-platform-tests.live"]
 }
+
+module "web_platform_tests_live_health_check" {
+  source = "../../modules/aws/health_check"
+  fqdn = "web-platform-tests.live"
+  alert_sns_arn = "${var.alert_sns_arn}"
+}
