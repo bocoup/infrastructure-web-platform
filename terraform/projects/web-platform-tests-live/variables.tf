@@ -17,13 +17,6 @@ variable "key_name" {
 }
 
 ##
-# The id of the sns topic to alert on when the health check
-# fails. These currently need to be created manually and can not be
-# setup via terraform.
-#
-variable "alert_sns_arn" {}
-
-##
 # This tells Terraform how to authenticate for AWS resources. It expects
 # an entry in ~/.aws/credentials with a matching profile. You can create
 # this with `aws configure --profile web-platform`.
