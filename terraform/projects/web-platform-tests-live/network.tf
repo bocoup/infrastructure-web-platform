@@ -124,3 +124,14 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_xn--n8j6ds53lww
   ttl = "1"
   records = ["not-web-platform-tests.live"]
 }
+
+module "web_platform_tests_live_health_check" {
+  source = "../../modules/aws/health_check"
+  fqdn = "web-platform-tests.live"
+
+  # Health Checks
+  # this sns_arn resource was created manually in aws sns console
+  # because it cannot be done via terraform. it sends messages to
+  # infrastructure+web-platform@bocoup.com
+  alert_sns_arn = "arn:aws:sns:us-east-1:682416359150:web-platform-domains-health-check"
+}
