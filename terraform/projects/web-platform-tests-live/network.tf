@@ -128,6 +128,7 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_xn--n8j6ds53lww
 module "web_platform_tests_live_health_check" {
   source = "../../modules/aws/health_check"
   fqdn = "web-platform-tests.live"
+  measure_latency = true
 
   # Health Checks
   # this sns_arn resource was created manually in aws sns console

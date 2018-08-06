@@ -2,6 +2,7 @@ variable "fqdn" { }
 variable "type" { default = "HTTPS" }
 variable "port" { default = "443" }
 variable "alert_sns_arn" { }
+variable "measure_latency" { default = false }
 
 resource "aws_route53_health_check" "main" {
   fqdn = "${var.fqdn}"
@@ -13,6 +14,8 @@ resource "aws_route53_health_check" "main" {
   # a request interval of 30 seconds actually means ping for health every
   # few seconds because there are health checkers at datacenters around
   # the world which are not perfectly coordinated.
+
+  measure_latency = "${var.measure_latency}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "main" {
