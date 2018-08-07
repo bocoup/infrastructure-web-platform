@@ -5,6 +5,9 @@
 2. Ensure `~/.aws/credentials` has an entry with administrative access keys
    matching the `profile` for the project. The profile name can be found in
    `terraform/{project}/variables.tf` under the `provider "aws" {}` block.
+3. For projects that integrate with GitHub.com, retrieve a valid access token
+   and store it in a file named `token-github.txt` located in the same
+   directory as this document.
 
 ### Commands Available
 The most common lifecycle commands `init`, `plan`, and `apply` have been aliased
