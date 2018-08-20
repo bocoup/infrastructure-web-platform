@@ -3,12 +3,13 @@ variable "type" { default = "HTTPS" }
 variable "port" { default = "443" }
 variable "alert_sns_arn" { }
 variable "measure_latency" { default = false }
+variable "resource_path" { default = "/" }
 
 resource "aws_route53_health_check" "main" {
   fqdn = "${var.fqdn}"
   type = "${var.type}"
   port = "${var.port}"
-  resource_path = "/"
+  resource_path = "${var.resource_path}"
   failure_threshold = "1"
   request_interval = "30"
   # a request interval of 30 seconds actually means ping for health every

@@ -69,6 +69,7 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_wildcard-not_we
 module "web_platform_tests_live_health_check" {
   source = "../../modules/aws/health_check"
   fqdn = "web-platform-tests.live"
+  resource_path = "/?aws-health-check"
   measure_latency = true
 
   # Health Checks
