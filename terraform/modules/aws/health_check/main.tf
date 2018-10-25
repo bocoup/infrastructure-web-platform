@@ -20,7 +20,7 @@ resource "aws_route53_health_check" "main" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "main" {
-  alarm_name = "health of ${var.fqdn}"
+  alarm_name = "Health of ${lower(var.type)}://${var.fqdn}"
   metric_name = "HealthCheckStatus"
   namespace = "AWS/Route53"
   dimensions = {
@@ -36,5 +36,5 @@ resource "aws_cloudwatch_metric_alarm" "main" {
                         # data
   alarm_actions = ["${var.alert_sns_arn}"]
   ok_actions = ["${var.alert_sns_arn}"]
-  alarm_description = "Health monitoring for ${var.fqdn}."
+  alarm_description = "Health monitoring for ${lower(var.type)}://${var.fqdn}."
 }

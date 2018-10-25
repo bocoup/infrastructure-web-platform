@@ -66,10 +66,39 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_wildcard-not_we
   records = ["not-web-platform-tests.live"]
 }
 
-module "web_platform_tests_live_health_check" {
+module "web_platform_tests_live_http_health_check" {
   source = "../../modules/aws/health_check"
   fqdn = "web-platform-tests.live"
-  resource_path = "/?aws-health-check"
+  type = "HTTP"
+  port = "80"
+
+  # The WPT server log entries do not designate the protocol of requests, so
+  # this information is included in the path of the health check.
+  #
+  # https://github.com/web-platform-tests/wpt/pull/13632
+  resource_path = "/?aws-health-check-http"
+
+  measure_latency = true
+
+  # Health Checks
+  # this sns_arn resource was created manually in aws sns console
+  # because it cannot be done via terraform. it sends messages to
+  # infrastructure+web-platform@bocoup.com
+  alert_sns_arn = "arn:aws:sns:us-east-1:682416359150:web-platform-domains-health-check"
+}
+
+module "web_platform_tests_live_https_health_check" {
+  source = "../../modules/aws/health_check"
+  fqdn = "web-platform-tests.live"
+  type = "HTTPS"
+  port = "443"
+
+  # The WPT server log entries do not designate the protocol of requests, so
+  # this information is included in the path of the health check.
+  #
+  # https://github.com/web-platform-tests/wpt/pull/13632
+  resource_path = "/?aws-health-check-https"
+
   measure_latency = true
 
   # Health Checks
