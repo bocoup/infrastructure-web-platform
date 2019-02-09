@@ -39,6 +39,18 @@ resource "aws_route53_record" "web_platform_tests_live_CNAME_wildcard-web_platfo
   records = ["web-platform-tests.live"]
 }
 
+# WPT endorses the use of the subdomain `nonexistent` for tests which require a
+# non-existent host. An explicit CNAME record overrides the "wildcard" record
+# defined above in order to ensure that requests to this particular subdomain
+# do not resolve.
+resource "aws_route53_record" "web_platform_tests_live_CNAME_nonexistent-web_platform_tests_live" {
+  zone_id = "${aws_route53_zone.web_platform_tests_live.zone_id}"
+  type = "CNAME"
+  name = "nonexistent"
+  ttl = "1"
+  records = ["0.0.0.0"]
+}
+
 ## alternate domain dns records
 resource "aws_route53_zone" "not_web_platform_tests_live" {
   name = "not-web-platform-tests.live"
@@ -64,6 +76,18 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_wildcard-not_we
   name = "*"
   ttl = "1"
   records = ["not-web-platform-tests.live"]
+}
+
+# WPT endorses the use of the subdomain `nonexistent` for tests which require a
+# non-existent host. An explicit CNAME record overrides the "wildcard" record
+# defined above in order to ensure that requests to this particular subdomain
+# do not resolve.
+resource "aws_route53_record" "web_platform_tests_live_CNAME_nonexistent-not-web_platform_tests_live" {
+  zone_id = "${aws_route53_zone.web_platform_tests_live.zone_id}"
+  type = "CNAME"
+  name = "nonexistent"
+  ttl = "1"
+  records = ["0.0.0.0"]
 }
 
 module "web_platform_tests_live_http_health_check" {
