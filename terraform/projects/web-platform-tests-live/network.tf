@@ -83,7 +83,7 @@ resource "aws_route53_record" "not_web_platform_tests_live_CNAME_wildcard-not_we
 # defined above in order to ensure that requests to this particular subdomain
 # do not resolve.
 resource "aws_route53_record" "web_platform_tests_live_CNAME_nonexistent-not-web_platform_tests_live" {
-  zone_id = "${aws_route53_zone.web_platform_tests_live.zone_id}"
+  zone_id = "${aws_route53_zone.not_web_platform_tests_live.zone_id}"
   type = "CNAME"
   name = "nonexistent"
   ttl = "1"
