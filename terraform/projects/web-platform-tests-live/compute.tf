@@ -9,6 +9,8 @@ resource "aws_instance" "web_platform_tests_live" {
   tags {
     "Name" = "${var.name}-production"
   }
+
+  iam_instance_profile = "${aws_iam_instance_profile.web_platform_tests_live.id}"
 }
 
 resource "aws_eip" "web_platform_tests_live" {
@@ -34,3 +36,63 @@ resource "aws_security_group" "web_platform_tests_live" {
   }
 }
 
+resource "aws_iam_instance_profile" "web_platform_tests_live" {
+  name = "web_platform_tests_live"
+  role = "${aws_iam_role.web_platform_tests_live.name}"
+}
+
+resource "aws_iam_role" "web_platform_tests_live" {
+  name = "${var.key_name}"
+  path = "/"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {"AWS": "*"},
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "web_platform_tests_live" {
+  name = "${var.key_name}"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Id": "certbot-dns-route53 sample policy",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones",
+                "route53:GetChange"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect" : "Allow",
+            "Action" : [
+                "route53:ChangeResourceRecordSets"
+            ],
+            "Resource" : [
+                "arn:aws:route53:::hostedzone/${aws_route53_zone.web_platform_tests_live.zone_id}",
+                "arn:aws:route53:::hostedzone/${aws_route53_zone.not_web_platform_tests_live.zone_id}"
+            ]
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "web_platform_tests_live" {
+  name = "${var.key_name}"
+  roles = ["${aws_iam_role.web_platform_tests_live.name}"]
+  policy_arn = "${aws_iam_policy.web_platform_tests_live.arn}"
+}
